@@ -19,8 +19,4 @@ DbConnect();
 app.use(express.json({ limit: '8mb' }));
 app.use(router);
 
-app.get('/', (req, res) => {
-    res.send('Hello from express Js');
-});
-
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
