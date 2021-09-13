@@ -4,16 +4,17 @@
   align-items: center;
   justify-content: space-between;
 }
+
 .logoutButton {
   background: none;
   cursor: pointer;
-  border: none;
 }
 
-.rightNav {
+.navRight {
   display: flex;
   align-items: center;
 }
+
 .avatar {
   border-radius: 50%;
   object-fit: cover;

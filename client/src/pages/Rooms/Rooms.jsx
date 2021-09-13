@@ -1,80 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddRoomModal from "../../components/shared/AddRoomModal/AddRoomModal";
 import RoomCard from "../../components/shared/RoomCard/RoomCard";
+import { getAllRooms } from "../../http";
 import styles from "./Rooms.module.css";
 
-const rooms = [
-  {
-    id: 1,
-    topic: "Which framework best for frontend ?",
-    speakers: [
-      {
-        id: 1,
-        name: "John Doe",
-        avatar: "/images/monkey-avatar.png",
-      },
-      {
-        id: 2,
-        name: "Jane Doe",
-        avatar: "/images/monkey-avatar.png",
-      },
-    ],
-    totalPeople: 40,
-  },
-  {
-    id: 3,
-    topic: "What’s new in machine learning?",
-    speakers: [
-      {
-        id: 1,
-        name: "John Doe",
-        avatar: "/images/monkey-avatar.png",
-      },
-      {
-        id: 2,
-        name: "Jane Doe",
-        avatar: "/images/monkey-avatar.png",
-      },
-    ],
-    totalPeople: 40,
-  },
-  {
-    id: 4,
-    topic: "Why people use stack overflow?",
-    speakers: [
-      {
-        id: 1,
-        name: "John Doe",
-        avatar: "/images/monkey-avatar.png",
-      },
-      {
-        id: 2,
-        name: "Jane Doe",
-        avatar: "/images/monkey-avatar.png",
-      },
-    ],
-    totalPeople: 40,
-  },
-  {
-    id: 5,
-    topic: "Artificial inteligence is the future?",
-    speakers: [
-      {
-        id: 1,
-        name: "John Doe",
-        avatar: "/images/monkey-avatar.png",
-      },
-      {
-        id: 2,
-        name: "Jane Doe",
-        avatar: "/images/monkey-avatar.png",
-      },
-    ],
-    totalPeople: 40,
-  },
-];
 const Rooms = () => {
   const [showModal, setShowModal] = useState(false);
+  const [rooms, setRooms] = useState([]);
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      const { data } = await getAllRooms();
+      console.log(data);
+      setRooms(data);
+    };
+    fetchRooms();
+  }, []);
+
   const openModal = () => {
     setShowModal(true);
   };
@@ -97,7 +39,7 @@ const Rooms = () => {
           </div>
         </div>
         <div className={styles.roomList}>
-          {rooms.map((room) => (
+          {rooms?.map((room) => (
             <RoomCard key={room.id} room={room} />
           ))}
         </div>
