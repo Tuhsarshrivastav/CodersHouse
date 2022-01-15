@@ -8,10 +8,14 @@ import { getRoom } from '../../http';
 const Room = () => {
     const { id: roomId } = useParams();
     const user = useSelector((state) => state.auth.user);
-
-    const { clients, provideRef } = useWebRTC(roomId, user);
+    const { clients, provideRef,handleMute } = useWebRTC(roomId, user);
     const history = useHistory();
     const [room, setRoom] = useState(null);
+    const [isMute,setMute] = useState(true)
+
+    useEffect(()=>{
+      handleMute(isMute,user.id)
+    },[isMute])
 
     const handleManualLeave = () => {
         history.push('/rooms');
@@ -25,6 +29,13 @@ const Room = () => {
 
         fetchRoom();
     }, [roomId]);
+
+
+    const handleMuteClick = (clientId)=>{
+        
+        if(clientId !== user.id) return
+     setMute((isMute)=> !isMute)
+    }
 
     return (
         <div>
@@ -67,15 +78,20 @@ const Room = () => {
                                         alt="avatar"
                                     />
 
-                                    <button className={styles.micBtn}>
-                                        {/* <img
-                                            src="/images/mic.png"
-                                            alt="mic-icon"
-                                        /> */}
-                                        <img
-                                            src="/images/mic-mute.png"
-                                            alt="mic-mute-icon"
-                                        />
+                                    <button onClick={()=> handleMuteClick(client.id)} className={styles.micBtn}>
+                                        {
+                                            client.muted ?(
+                                                <img
+                                                src="/images/mic-mute.png"
+                                                alt="mic-icon"/>
+                                                
+                                            ):(
+                                                <img
+                                                src="/images/mic.png"
+                                                alt="mic-mute-icon"
+                                            />
+                                            )
+                                        }
                                     </button>
                                 </div>
                                 <h4>{client.name}</h4>
